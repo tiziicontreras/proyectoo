@@ -1,0 +1,47 @@
+<main>
+  <div class="login-container">
+    <div class="login-box">
+
+      <!-- LOGO -->
+      <img src="assets/wgk.avif" alt="logo" class="login-logo">
+
+      <h2 class="login-title">Iniciar sesión</h2>
+
+      <form (ngSubmit)="ingresar()">
+        <div class="mb-3">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Correo electrónico"
+            [(ngModel)]="email"
+            name="email"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Contraseña"
+            [(ngModel)]="clave"
+            name="clave"
+            required>
+        </div>
+
+        @if (error()) {
+          <p class="login-error">{{ error() }}</p>
+        }
+
+        <button type="submit" class="btn btn-primary w-100">
+          Ingresar
+        </button>
+      </form>
+
+      <p class="login-register-text">
+        ¿No tenés cuenta?
+        <a routerLink="/auth/registro">Registrarse</a>
+      </p>
+
+    </div>
+  </div>
+</main>

@@ -1,0 +1,174 @@
+/* Título */
+/* Título */
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #040404;
+  margin: 40px 0;
+}
+
+/* Tabla */
+.table {
+  width: 90%;
+  margin: auto;
+  background: #111;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+}
+
+/* Encabezados */
+.table thead {
+  background: #000;
+}
+
+.table thead th {
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Filas */
+.table tbody tr {
+  transition: all .3s ease;
+}
+
+.table tbody tr:hover {
+  background: #1d1d1d;
+  transform: scale(1.01);
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 20px;
+  border-color: #222;
+  text-align: center;
+}
+
+/* Imagen */
+.table img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Nombre del producto */
+.table td:nth-child(2) {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Precio */
+.table td:nth-child(3) {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Botón carrito */
+.table td button:not(.btn-danger) {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+
+.table td button:not(.btn-danger):hover {
+  transform: scale(1.1);
+  background: #eaeaea;
+}
+
+/* Botón eliminar */
+.btn-danger {
+  background: transparent;
+  border: 1px solid #fff;
+  transition: .3s;
+  padding: 10px 12px;
+}
+
+.btn-danger:hover {
+  background: #000;
+  transform: scale(1.1);
+}
+
+.btn-danger svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table {
+    width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .table img {
+    width: 60px;
+    height: 60px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .table td button:not(.btn-danger) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+}
+
+.vacio {
+  max-width: 460px;
+  margin: 60px auto;
+  padding: 48px 32px;
+  background: #000;
+  color: #fff;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.vacio svg {
+  opacity: 0.85;
+}
+
+.vacio h2 {
+  margin: 8px 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.vacio p {
+  margin: 0 0 12px;
+  color: #aaa;
+}
+
+.vacio-btn {
+  background: #fff;
+  color: #000;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.vacio-btn:hover {
+  opacity: 0.8;
+}

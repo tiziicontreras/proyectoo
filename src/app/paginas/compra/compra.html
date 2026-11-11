@@ -1,0 +1,39 @@
+<section class="compra">
+  <h2 class="compra-titulo">Resumen de tu compra</h2>
+
+  @if (items().length > 0) {
+    <div class="compra-card">
+      @for (i of items(); track i.id_producto) {
+        <div class="compra-item">
+          <img [src]="imagenUrl(i)" [alt]="i.nombre" class="compra-img">
+          <div class="compra-info">
+            <h3>{{ i.nombre }}</h3>
+            <span>Cantidad: {{ i.cantidad }}</span>
+          </div>
+          <div class="compra-precio">${{ formato(+i.precio_unitario * +i.cantidad) }}</div>
+        </div>
+      }
+
+      <div class="compra-total">
+        <span>Total</span>
+        <strong>${{ formato(total()) }}</strong>
+      </div>
+    </div>
+
+    @if (error()) {
+      <p class="compra-error">{{ error() }}</p>
+    }
+
+    <button class="compra-btn" (click)="finalizar()" [disabled]="enviando()">
+      {{ enviando() ? "Procesando..." : "Confirmar compra" }}
+    </button>
+  } @else {
+    @if (error()) {
+      <p class="compra-error">{{ error() }}</p>
+    }
+    <div class="compra-vacio">
+      <p>No hay productos en el carrito.</p>
+      <a routerLink="/productos" class="compra-link">Ir a productos</a>
+    </div>
+  }
+</section>

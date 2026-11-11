@@ -1,0 +1,208 @@
+<section class="adm">
+
+  <h1 class="adm-titulo">Panel de administración</h1>
+
+  <!-- Resumen -->
+  <div class="adm-resumen">
+    <div class="adm-card">
+      <span>Productos</span>
+      <strong>{{ productos().length }}</strong>
+    </div>
+    <div class="adm-card">
+      <span>Usuarios</span>
+      <strong>{{ usuarios().length }}</strong>
+    </div>
+    <div class="adm-card">
+      <span>Ventas</span>
+      <strong>{{ ventas().length }}</strong>
+    </div>
+    <div class="adm-card">
+      <span>Total vendido</span>
+      <strong>${{ formato(totalVendido()) }}</strong>
+    </div>
+  </div>
+
+  <!-- Pestañas -->
+  <nav class="adm-tabs">
+    <button class="adm-tab" [class.activa]="seccion() === 'productos'" (click)="seccion.set('productos')">
+      Productos
+    </button>
+    <button class="adm-tab" [class.activa]="seccion() === 'usuarios'" (click)="seccion.set('usuarios')">
+      Usuarios
+    </button>
+    <button class="adm-tab" [class.activa]="seccion() === 'ventas'" (click)="seccion.set('ventas')">
+      Ventas
+    </button>
+  </nav>
+
+  <!-- ================= PRODUCTOS ================= -->
+  @if (seccion() === 'productos') {
+
+    <div class="adm-panel">
+      <h2>{{ form().id ? "Editar producto" : "Nuevo producto" }}</h2>
+
+      <div class="adm-form">
+        <label>
+          Nombre
+          <input [ngModel]="form().nombre" (ngModelChange)="cambiar('nombre', $event)"
+                 placeholder="Ej: Nike Air Force 1">
+        </label>
+
+        <label>
+          Precio
+          <input type="number" min="0" [ngModel]="form().precio" (ngModelChange)="cambiar('precio', $event)">
+        </label>
+
+        <label class="adm-ancho">
+          Descripción
+          <textarea rows="3" [ngModel]="form().descripcion" (ngModelChange)="cambiar('descripcion', $event)"
+                    placeholder="Detalles del producto"></textarea>
+        </label>
+
+        <label class="adm-ancho">
+          Imagen
+          <input type="file" accept="image/*" (change)="alElegirArchivo($event)">
+        </label>
+
+        @if (vistaPrevia() || form().imagen) {
+          <img class="adm-preview" [src]="vistaPrevia() || imagenUrl(form().imagen)" alt="Vista previa">
+        }
+      </div>
+
+      @if (error()) {
+        <p class="adm-error">{{ error() }}</p>
+      }
+      @if (mensaje()) {
+        <p class="adm-ok">{{ mensaje() }}</p>
+      }
+
+      <div class="adm-botones">
+        <button class="adm-btn adm-btn-verde" (click)="guardar()" [disabled]="guardando()">
+          {{ guardando() ? "Guardando..." : (form().id ? "Guardar cambios" : "Crear producto") }}
+        </button>
+        @if (form().id) {
+          <button class="adm-btn adm-btn-gris" (click)="cancelar()">Cancelar</button>
+        }
+      </div>
+    </div>
+
+    @if (productos().length === 0) {
+      <p class="adm-vacio">Todavía no hay productos.</p>
+    } @else {
+      <div class="adm-tabla">
+        <table class="table table-dark table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Imagen</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of productos(); track p.id) {
+              <tr>
+                <td>
+                  @if (p.imagen) {
+                    <img class="adm-img" [src]="imagenUrl(p.imagen)" [alt]="p.nombre">
+                  }
+                </td>
+                <td>
+                  {{ p.nombre }}<br>
+                  <small class="adm-sub">{{ p.descripcion }}</small>
+                </td>
+                <td>${{ formato(p.precio) }}</td>
+                <td class="adm-acciones">
+                  <button class="adm-btn adm-btn-sm adm-btn-claro" (click)="editar(p)">Editar</button>
+                  <button class="adm-btn adm-btn-sm adm-btn-rojo" (click)="eliminar(p.id)">Eliminar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  <!-- ================= USUARIOS ================= -->
+  @if (seccion() === 'usuarios') {
+    @if (usuarios().length === 0) {
+      <p class="adm-vacio">No hay usuarios para mostrar.</p>
+    } @else {
+      <div class="adm-tabla">
+        <table class="table table-dark table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Email</th>
+              <th scope="col">Rol</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of usuarios(); track u.id) {
+              <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.email }}</td>
+                <td>
+                  <span class="adm-rol" [class.admin]="u.rol === 'admin'">{{ u.rol }}</span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  <!-- ================= VENTAS ================= -->
+  @if (seccion() === 'ventas') {
+    @if (ventas().length === 0) {
+      <p class="adm-vacio">Todavía no hay ventas.</p>
+    } @else {
+      <div class="adm-tabla">
+        <table class="table table-dark table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Compra</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Total</th>
+              <th scope="col">Ticket</th>
+              <th scope="col">PDF</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (v of ventas(); track v.id_compra) {
+              <tr>
+                <td>#{{ v.id_compra }}</td>
+                <td>{{ v.fecha }}</td>
+                <td>
+                  {{ v.nombre }}<br>
+                  <small class="adm-sub">{{ v.email }}</small>
+                </td>
+                <td>${{ formato(v.total) }}</td>
+                <td>
+                  @if (v.numero_ticket) {
+                    {{ v.numero_ticket }}
+                  } @else {
+                    <span class="adm-sub">Sin ticket</span>
+                  }
+                </td>
+                <td>
+                  @if (v.pdf_path) {
+                    <a class="adm-btn adm-btn-sm adm-btn-claro" [href]="urlPdf(v)" target="_blank" rel="noopener">
+                      Abrir PDF
+                    </a>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+</section>

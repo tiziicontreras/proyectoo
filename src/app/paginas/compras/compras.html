@@ -1,0 +1,8 @@
+@for (c of compras; track c.id_compra) {
+ <div class="compra">
+ Compra #{{ c.id_compra }} — {{ c.fecha }} — Total: ${{ c.total }}
+ <a [routerLink]="['/paginas/ticket', c.id_compra]">Ver ticket</a>
+ </div>
+} @empty {
+ <p>Todavía no hiciste compras.</p>
+}

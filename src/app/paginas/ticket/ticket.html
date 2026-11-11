@@ -1,0 +1,27 @@
+<section class="ticket">
+  @if (ticket()) {
+    <div class="ticket-card">
+      <div class="ticket-check">✓</div>
+      <h2>¡Compra realizada!</h2>
+      <p class="ticket-sub">Gracias por tu compra. Acá tenés tu comprobante.</p>
+
+      <dl class="ticket-datos">
+        <div>
+          <dt>Ticket</dt>
+          <dd>{{ ticket().numero_ticket }}</dd>
+        </div>
+        <div>
+          <dt>Fecha</dt>
+          <dd>{{ ticket().fecha }}</dd>
+        </div>
+      </dl>
+
+      <a class="ticket-btn" [href]="urlPdf()" target="_blank" rel="noopener">Abrir PDF</a>
+      <a class="ticket-link" routerLink="/productos">Seguir comprando</a>
+    </div>
+  } @else if (error()) {
+    <p class="ticket-error">{{ error() }}</p>
+  } @else {
+    <p class="ticket-cargando">Cargando ticket...</p>
+  }
+</section>

@@ -1,0 +1,33 @@
+<div class="productos-container">
+
+  @for (p of productos(); track p.id) {
+
+    @if (p.disponibilidad !== false) {
+
+      <div class="card producto-card">
+
+        <img [src]="imagenUrl(p)" class="card-img-top" [alt]="p.nombre">
+
+        <div class="card-body">
+
+          <h5 class="card-title">{{ p.nombre }}</h5>
+
+          <p class="card-text">{{ p.descripcion }}</p>
+
+          <p class="price">${{ formatoPrecio(p) }}</p>
+
+          <div class="d-flex gap-2">
+            <button (click)="agregarCarrito(p)">🛒</button>
+            <button (click)="agregarFavoritos(p)">❤️</button>
+          </div>
+
+        </div>
+      </div>
+
+    }
+
+  } @empty {
+    <p>No hay productos para mostrar.</p>
+  }
+
+</div>

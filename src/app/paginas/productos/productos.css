@@ -1,0 +1,168 @@
+/* =========================
+   CONTENEDOR PRODUCTOS
+========================= */
+
+.productos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 30px;
+}
+
+/* =========================
+   TARJETA
+========================= */
+
+.producto-card {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: #fff;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.producto-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================
+   IMAGEN
+========================= */
+
+.card-img-top {
+  width: 100%;
+  height: 280px;
+
+  object-fit: cover;
+
+  background: #f5f5f5;
+
+  transition: transform 0.3s ease;
+}
+
+.producto-card:hover .card-img-top {
+  transform: scale(1.03);
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: 18px;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.card-text {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+
+  min-height: 50px;
+}
+
+/* =========================
+   PRECIO
+========================= */
+
+.price {
+  margin-top: auto;
+
+  font-size: 1.4rem;
+  font-weight: 800;
+
+  color: #111;
+
+  margin-bottom: 18px;
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+.d-flex.gap-2 {
+  display: flex;
+  gap: 10px;
+}
+
+/* carrito */
+
+.d-flex.gap-2 button:first-child {
+  width: 200px;
+  height: 50px;
+
+  border: 1px solid #dcdcdc;
+  background: white;
+
+  border-radius: 12px;
+
+  font-size: 1.1rem;
+  cursor: pointer;
+
+  transition: all .25s ease;
+}
+
+.d-flex.gap-2 button:first-child:hover {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+
+/* favoritos */
+
+.d-flex.gap-2 button:last-child {
+  flex: 1;
+
+  height: 50px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #111;
+  color: white;
+
+  font-size: 1rem;
+  cursor: pointer;
+
+  transition: all .25s ease;
+}
+
+.d-flex.gap-2 button:last-child:hover {
+  background: #000;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .productos-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .card-img-top {
+    height: 220px;
+  }
+}
