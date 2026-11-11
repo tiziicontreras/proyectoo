@@ -1,106 +1,84 @@
 
-import { Component } from '@angular/core';
-import { CarritoService } from '../../servicios/carrito.service';
-import { FavoritoService } from '../../servicios/favoritoService';
-import { Producto } from '../../models/producto';
+import { Component, OnInit, signal } from "@angular/core";
+import { ProductService } from "../../servicios/product";
+import { CarritoService } from "../../servicios/carrito.service";
+import { FavoritoService } from "../../servicios/favoritoService";
+import { Producto } from "../../models/producto";
 
 @Component({
-  selector: 'app-ofertas',
+  selector: "app-ofertas",
   imports: [],
-  templateUrl: './ofertas.html',
-  styleUrl: './ofertas.css',
+  templateUrl: "./ofertas.html",
+  styleUrl: "./ofertas.css"
 })
-export class Ofertas {
+export class Ofertas implements OnInit {
+
+  productos = signal<Producto[]>([]);
+
+  private carpetaImagenes = "/assets/";
 
   constructor(
-    private CarritoService: CarritoService,
-    private FavoritoService: FavoritoService
+    private productService: ProductService,
+    private carrito: CarritoService,
+    private favoritoService: FavoritoService
   ) {}
 
-  Productos: Producto[] = [
-    {
-      id: 1,
-      nombre: "Nike Air Force 1 '07",
-      disponibilidad: true,
-      descripcion: "Zapatillas de Moda para Hombre",
-      cantidad: 1,
-      precio: 299999,
-      precioOferta: 160999,
-      img: "assets/157486-800-800.webp"
-    },
-    {
-      id: 2,
-      nombre: "Nike Pegasus Plus",
-      disponibilidad: true,
-      descripcion: "Zapatillas de Running para Hombre",
-      precio: 369999,
-      precioOferta: 258999,
-      cantidad: 1,
-      img: "assets/1140855-800-800.webp"
-    },
-    {
-      id: 3,
-      nombre: "Air Jordan 3 Retro",
-      disponibilidad: true,
-      descripcion: "Zapatillas Jordan para Hombre",
-      precio: 314999,
-      precioOferta: 220999,
-      cantidad: 1,
-      img: "assets/1531060-800-800 (1).webp"
-    },
-    {
-      id: 4,
-      nombre: "Air Jordan 1 Low",
-      disponibilidad: true,
-      descripcion: "Zapatillas Jordan para Hombre",
-      precio: 259999,
-      precioOferta: 194999,
-      cantidad: 1,
-      img: "assets/1504079-800-800.webp"
-    },
-    {
-      id: 5,
-      nombre: "Nike Elemental",
-      disponibilidad: true,
-      descripcion: "Mochila de Moda Unisex",
-      precio: 99999,
-      precioOferta: 69999,
-      cantidad: 1,
-      img: "assets/1292396-800-800.webp"
-    },
-    {
-      id: 6,
-      nombre: "Nike Air Max Dn",
-      disponibilidad: true,
-      descripcion: "Zapatillas de Moda para Hombre",
-      precio: 369999,
-      precioOferta: 258999,
-      cantidad: 1,
-      img: "assets/1363281-800-800.webp"
-    }
-  ];
+  ngOnInit(): void {
+    this.cargar();
+  }
 
-  // AGREGAMOS AL CARRITO
-  agregarCarrito(p: Producto): void {
-    const productoOferta: Producto = {
-      ...p,
-      precio: p.precioOferta ?? p.precio
-    };
+  // Carga los productos desde la API y filtra las ofertas
+  cargar(): void {
+    this.productService.listar("").subscribe({
+      next: (lista) => {
+        const ofertas = lista.filter(p =>
+          p.precioOferta != null &&
+          Number(p.precioOferta) > 0 &&
+          Number(p.precioOferta) < Number(p.precio)
+        );
 
-    this.CarritoService.agregar(productoOferta.id, 1).subscribe(() => {
-      alert("Agregado al carrito");
+        this.productos.set(ofertas);
+      },
+      error: (err) => console.error("Error al cargar ofertas:", err)
     });
   }
 
-  // AGREGAMOS A FAVORITOS
-  agregarFavoritos(p: Producto): void {
-    const productoOferta: Producto = {
-      ...p,
-      precio: p.precioOferta ?? p.precio
-    };
+  // Ruta de la imagen
+  imagenUrl(p: Producto): string {
+    const nombre = p.imagen ?? p.img ?? "";
 
-    this.FavoritoService.agregar(productoOferta.id).subscribe(() => {
-      alert("Agregado a favoritos");
+    if (!nombre) return "";
+    if (nombre.startsWith("http")) return nombre;
+
+    return this.carpetaImagenes + nombre;
+  }
+
+  // Formato de precios
+  formatoPrecio(precio: number): string {
+    return Number(precio).toLocaleString("es-AR");
+  }
+
+  agregarCarrito(producto: Producto): void {
+    this.carrito.agregar(producto.id, 1).subscribe({
+      next: () => alert("Agregado al carrito"),
+      error: (err) => {
+        console.error("Error al agregar al carrito:", err);
+        alert(err.status === 401
+          ? "Iniciá sesión para agregar productos al carrito"
+          : (err.error?.error ?? "No se pudo agregar al carrito"));
+      }
+    });
+  }
+
+  agregarFavoritos(producto: Producto): void {
+    this.favoritoService.agregar(producto.id).subscribe({
+      next: () => alert("Agregado a favoritos"),
+      error: (err) => {
+        console.error("Error al agregar a favoritos:", err);
+        alert(err.status === 401
+          ? "Iniciá sesión para guardar favoritos"
+          : (err.error?.error ?? "No se pudo agregar a favoritos"));
+      }
     });
   }
 }

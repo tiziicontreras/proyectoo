@@ -1,93 +1,58 @@
-/* =========================
-   CONTENEDOR OFERTAS
-========================= */
 
-.ofertas-container {
+.productos-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
   padding: 30px;
 }
 
-/* =========================
-   TARJETA
-========================= */
-
-.oferta-card {
+.producto-card {
   position: relative;
-
   border: none;
   border-radius: 18px;
   overflow: hidden;
-
   background: #fff;
-
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-
   transition: all 0.3s ease;
-
   display: flex;
   flex-direction: column;
-
   height: 100%;
 }
 
-.oferta-card:hover {
+.producto-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
 }
 
-/* =========================
-   BURBUJA OFERTA
-========================= */
-
-.oferta-badge {
+.oferta-etiqueta {
   position: absolute;
-  top: 12px;
-  right: 12px;
-
-  background: #ff0000;
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  background: #d60000;
   color: white;
-
-  font-size: 0.8rem;
-  font-weight: 700;
-
-  padding: 8px 14px;
-  border-radius: 50px;
-
-  z-index: 10;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
 }
-
-/* =========================
-   IMAGEN
-========================= */
 
 .card-img-top {
   width: 100%;
   height: 280px;
-
   object-fit: cover;
-
   background: #f5f5f5;
-
   transition: transform 0.3s ease;
 }
 
-.oferta-card:hover .card-img-top {
+.producto-card:hover .card-img-top {
   transform: scale(1.03);
 }
-
-/* =========================
-   CONTENIDO
-========================= */
 
 .card-body {
   display: flex;
   flex-direction: column;
   flex: 1;
-
   padding: 18px;
 }
 
@@ -102,48 +67,41 @@
   color: #666;
   font-size: 0.9rem;
   line-height: 1.4;
-
   min-height: 50px;
 }
 
-/* =========================
-   PRECIO
-========================= */
-
-.price {
+.precios {
   margin-top: auto;
-
-  font-size: 1.4rem;
-  font-weight: 800;
-
-  color: #111;
-
   margin-bottom: 18px;
 }
 
-/* =========================
-   BOTONES
-========================= */
+.precio-original {
+  color: #888;
+  font-size: 1rem;
+  text-decoration: line-through;
+  margin: 0;
+}
+
+.precio-oferta {
+  color: #d60000;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin: 3px 0 0;
+}
 
 .d-flex.gap-2 {
   display: flex;
   gap: 10px;
 }
 
-/* carrito */
-
 .d-flex.gap-2 button:first-child {
   width: 200px;
   height: 50px;
-
   border: 1px solid #dcdcdc;
   background: white;
-
   border-radius: 12px;
-
   font-size: 1.1rem;
   cursor: pointer;
-
   transition: all .25s ease;
 }
 
@@ -153,22 +111,15 @@
   border-color: #111;
 }
 
-/* favoritos */
-
 .d-flex.gap-2 button:last-child {
   flex: 1;
-
   height: 50px;
-
   border: none;
   border-radius: 12px;
-
   background: #111;
   color: white;
-
   font-size: 1rem;
   cursor: pointer;
-
   transition: all .25s ease;
 }
 
@@ -176,12 +127,8 @@
   background: #000;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
 @media (max-width: 768px) {
-  .ofertas-container {
+  .productos-container {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     padding: 15px;
     gap: 15px;
@@ -190,39 +137,4 @@
   .card-img-top {
     height: 220px;
   }
-
-  .oferta-badge {
-    font-size: 0.7rem;
-    padding: 6px 12px;
-  }
-}
-
-.precio-container{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.precio-original{
-  margin-top: auto;
-
-  font-size: 1.4rem;
-  font-weight: 500  ;
-
-  color: #999;
-
-  margin-bottom: 18px;
-  text-decoration: line-through;
-}
-
-.precio-oferta{
-  margin-top: auto;
-
-  font-size: 1.4rem;
-  font-weight: 800;
-
-  color: #000;
-
-  margin-bottom: 18px;
 }

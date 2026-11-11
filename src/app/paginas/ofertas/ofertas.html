@@ -1,65 +1,50 @@
 
+<div class="productos-container">
 
-<div class="ofertas-container">
+  @for (p of productos(); track p.id) {
 
-    @for (p of Productos; track p.id) {
+    @if (p.disponibilidad !== false) {
 
-    @if (p.disponibilidad) {
+      <div class="card producto-card">
 
-    <div class="card oferta-card">
+        <div class="oferta-etiqueta">OFERTA</div>
 
-        <!-- Burbuja de oferta -->
-        <span class="oferta-badge">OFERTA</span>
-
-        <!-- Imagen -->
-        <img [src]="p.img" class="card-img-top" [alt]="p.nombre">
+        <img
+          [src]="imagenUrl(p)"
+          class="card-img-top"
+          [alt]="p.nombre"
+        >
 
         <div class="card-body">
 
-            <!-- Nombre -->
-            <h5 class="card-title">{{ p.nombre }}</h5>
+          <h5 class="card-title">{{ p.nombre }}</h5>
 
-            <!-- Descripción -->
-            <p class="card-text">
-                {{ p.descripcion }}
+          <p class="card-text">{{ p.descripcion }}</p>
+
+          <div class="precios">
+
+            <p class="precio-original">
+              ${{ formatoPrecio(p.precio) }}
             </p>
 
-            <!-- Precio -->
-            <div class="precio-container">
+            <p class="precio-oferta">
+              ${{ formatoPrecio(p.precioOferta!) }}
+            </p>
 
-                <span class="precio-original">
-                    ${{ p.precio }}
-                </span>
+          </div>
 
-                <span class="precio-oferta">
-                    ${{ p.precioOferta }}
-                </span>
-
-            </div>
-
-
-
-            <!-- Botones -->
-            <div class="d-flex gap-2">
-
-                <!-- Agregar al carrito -->
-                <button (click)="agregarCarrito(p)">
-                    🛒
-                </button>
-
-                <!-- Agregar a favoritos -->
-                <button (click)="agregarFavoritos(p)">
-                    ❤️
-                </button>
-
-            </div>
+          <div class="d-flex gap-2">
+            <button (click)="agregarCarrito(p)">🛒</button>
+            <button (click)="agregarFavoritos(p)">❤️</button>
+          </div>
 
         </div>
-
-    </div>
-
-    }
+      </div>
 
     }
+
+  } @empty {
+    <p>No hay ofertas disponibles.</p>
+  }
 
 </div>
