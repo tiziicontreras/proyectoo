@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, signal } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { CarritoService } from "../../servicios/carrito.service";
+import { ProductService } from "../../servicios/product";
 
 @Component({
   selector: "app-carrito",
@@ -12,10 +13,13 @@ export class CarritoComponent implements OnInit {
 
   items = signal<any[]>([]);
 
+  // Mapa id_producto -> precio de oferta
+  ofertas = signal<Map<number, number>>(new Map());
+
   // Carpeta donde están las fotos
   private carpetaImagenes = "/assets/";
 
-  // Precio total del carrito (se recalcula solo cuando cambia la lista)
+  // Precio total del carrito (se recalcula solo cuando cambia la lista o las ofertas)
   total = computed(() =>
     this.items().reduce(
       (suma, i) => suma + Number(i.cantidad) * this.precioDe(i),
@@ -25,11 +29,31 @@ export class CarritoComponent implements OnInit {
 
   constructor(
     private carrito: CarritoService,
+    private productService: ProductService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.cargarOfertas();
     this.cargar();
+  }
+
+  // CARGAMOS LOS PRECIOS DE OFERTA DE LOS PRODUCTOS
+  cargarOfertas(): void {
+    this.productService.listar("").subscribe({
+      next: (lista) => {
+        const mapa = new Map<number, number>();
+        for (const p of lista as any[]) {
+          const normal = Number(p.precio);
+          const oferta = Number(p.precio_oferta ?? p.precioOferta);
+          if (oferta > 0 && oferta < normal) {
+            mapa.set(Number(p.id), oferta);
+          }
+        }
+        this.ofertas.set(mapa);
+      },
+      error: (err) => console.error("Error al cargar ofertas:", err)
+    });
   }
 
   // CARGAMOS LOS PRODUCTOS DEL CARRITO
@@ -45,8 +69,10 @@ export class CarritoComponent implements OnInit {
     return item.id_producto ?? item.id;
   }
 
-  // Precio unitario (la API lo manda como texto: "249999.00")
+  // Precio unitario: si el producto está en oferta, usa el precio de oferta
   precioDe(item: any): number {
+    const oferta = this.ofertas().get(Number(this.idDe(item)));
+    if (oferta != null) return oferta;
     return Number(item.precio_unitario ?? item.precio ?? 0);
   }
 

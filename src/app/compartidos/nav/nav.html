@@ -14,12 +14,12 @@
 
   <!-- Derecha: buscar y carrito -->
   <div class="acciones">
-    <a routerLink="/productos" class="icono-btn" aria-label="Buscar">
+    <button class="icono-btn" type="button" aria-label="Buscar" (click)="abrirBuscador(campo)">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="7" />
         <path d="M20 20l-3.5-3.5" />
       </svg>
-    </a>
+    </button>
 
     <a routerLink="/carrito" class="icono-btn carrito" aria-label="Carrito">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -31,6 +31,50 @@
   </div>
 
 </header>
+
+<!-- Buscador -->
+<div class="fondo-buscador" [class.visible]="buscadorAbierto()" (click)="cerrarBuscador()"></div>
+
+<div class="buscador" [class.abierto]="buscadorAbierto()">
+  <div class="buscador-fila">
+    <input
+      #campo
+      type="text"
+      placeholder="Buscar productos..."
+      [value]="texto()"
+      (input)="texto.set($any($event.target).value)"
+      (keydown.enter)="buscarEnter()"
+      (keydown.escape)="cerrarBuscador()">
+
+    <button class="icono-btn" type="button" aria-label="Cerrar buscador" (click)="cerrarBuscador()">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+
+  @if (sugerencias().length > 0) {
+    <ul class="sugerencias">
+      @for (p of sugerencias(); track p.id) {
+        <li>
+          <button type="button" class="sugerencia" (click)="elegir(p)">
+            <img [src]="imagenUrl(p)" [alt]="p.nombre" width="44" height="44">
+            <span class="sug-nombre">{{ p.nombre }}</span>
+            <span class="sug-precio">
+              @if (p.precioOferta) {
+                <s>${{ formato(p.precio) }}</s> ${{ formato(p.precioOferta) }}
+              } @else {
+                ${{ formato(p.precio) }}
+              }
+            </span>
+          </button>
+        </li>
+      }
+    </ul>
+  } @else if (texto().trim().length > 0) {
+    <p class="sin-resultados">No se encontraron productos.</p>
+  }
+</div>
 
 <!-- Fondo oscuro: al tocarlo se cierra el menú -->
 <div class="fondo" [class.visible]="menuAbierto()" (click)="cerrarMenu()"></div>

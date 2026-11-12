@@ -1,33 +1,33 @@
 <div class="productos-container">
 
-  @for (p of productos(); track p.id) {
+  @for (p of productosNormales(); track p.id) {
 
-    @if (p.disponibilidad !== false) {
+  @if (p.disponibilidad !== false) {
 
-      <div class="card producto-card">
+  <div class="card producto-card">
 
-        <img [src]="imagenUrl(p)" class="card-img-top" [alt]="p.nombre">
+    <img [src]="imagenUrl(p)" class="card-img-top" [alt]="p.nombre">
 
-        <div class="card-body">
+    <div class="card-body">
 
-          <h5 class="card-title">{{ p.nombre }}</h5>
+      <h5 class="card-title">{{ p.nombre }}</h5>
 
-          <p class="card-text">{{ p.descripcion }}</p>
+      <p class="card-text">{{ p.descripcion }}</p>
 
-          <p class="price">${{ formatoPrecio(p) }}</p>
+      <p class="price">${{ formatoPrecio(p.precio) }}</p>
 
-          <div class="d-flex gap-2">
-            <button (click)="agregarCarrito(p)">🛒</button>
-            <button (click)="agregarFavoritos(p)">❤️</button>
-          </div>
-
-        </div>
+      <div class="d-flex gap-2">
+        <button (click)="agregarCarrito(p)">🛒</button>
+        <button (click)="agregarFavoritos(p)">❤️</button>
       </div>
 
-    }
+    </div>
+  </div>
+
+  }
 
   } @empty {
-    <p>No hay productos para mostrar.</p>
+  <p>No hay productos para mostrar.</p>
   }
 
 </div>

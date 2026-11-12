@@ -1,8 +1,29 @@
-@for (c of compras; track c.id_compra) {
- <div class="compra">
- Compra #{{ c.id_compra }} — {{ c.fecha }} — Total: ${{ c.total }}
- <a [routerLink]="['/paginas/ticket', c.id_compra]">Ver ticket</a>
- </div>
-} @empty {
- <p>Todavía no hiciste compras.</p>
-}
+<section class="compras">
+
+  <h1>Mis compras</h1>
+
+  @for (c of compras; track c.id_compra) {
+    <div class="compra">
+
+      <div class="compra-info">
+        <span class="compra-numero">Compra #{{ c.id_compra }}</span>
+        <span class="compra-fecha">{{ formatoFecha(c.fecha) }}</span>
+      </div>
+
+      <div class="compra-total">
+        <span class="compra-total-label">Total</span>
+        <span class="compra-total-valor">${{ formatoTotal(c.total) }}</span>
+      </div>
+
+      <a class="compra-btn" [routerLink]="['/paginas/ticket', c.id_compra]">Ver ticket</a>
+
+    </div>
+  } @empty {
+    <div class="compras-vacio">
+      <h2>Todavía no hiciste compras</h2>
+      <p>Cuando compres algo, vas a ver tus comprobantes acá.</p>
+      <a class="compra-btn" routerLink="/productos">Ir a productos</a>
+    </div>
+  }
+
+</section>

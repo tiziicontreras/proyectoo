@@ -10,34 +10,38 @@
 
         <h2>Contacto</h2>
 
-        <form>
+        <form #formulario (submit)="enviar($event, formulario)">
 
           <div class="mb-3">
             <input
               type="text"
               class="form-control"
-              placeholder="Nombre completo">
+              placeholder="Nombre completo"
+              required>
           </div>
 
           <div class="mb-3">
             <input
               type="email"
               class="form-control"
-              placeholder="Correo electrónico">
+              placeholder="Correo electrónico"
+              required>
           </div>
 
           <div class="mb-3">
             <input
               type="text"
               class="form-control"
-              placeholder="Asunto">
+              placeholder="Asunto"
+              required>
           </div>
 
           <div class="mb-3">
             <textarea
               class="form-control"
               rows="5"
-              placeholder="Escribí tu mensaje"></textarea>
+              placeholder="Escribí tu mensaje"
+              required></textarea>
           </div>
 
           <button
@@ -50,7 +54,7 @@
 
         <p class="login-register-text">
           ¿Querés volver al inicio?
-          <a routerLink="Inicio">Ir al inicio</a>
+          <a routerLink="/inicio">Ir al inicio</a>
         </p>
 
       </div>

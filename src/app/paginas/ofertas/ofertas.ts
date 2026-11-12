@@ -1,4 +1,3 @@
-
 import { Component, OnInit, signal } from "@angular/core";
 import { ProductService } from "../../servicios/product";
 import { CarritoService } from "../../servicios/carrito.service";
@@ -27,15 +26,23 @@ export class Ofertas implements OnInit {
     this.cargar();
   }
 
-  // Carga los productos desde la API y filtra las ofertas
+  // Carga los productos desde la API y deja solo las ofertas
   cargar(): void {
     this.productService.listar("").subscribe({
       next: (lista) => {
-        const ofertas = lista.filter(p =>
-          p.precioOferta != null &&
-          Number(p.precioOferta) > 0 &&
-          Number(p.precioOferta) < Number(p.precio)
-        );
+        const ofertas = (lista as any[])
+          .map(p => ({
+            ...p,
+            precio: Number(p.precio),
+            precioOferta: p.precio_oferta != null
+              ? Number(p.precio_oferta)
+              : (p.precioOferta != null ? Number(p.precioOferta) : undefined)
+          }) as Producto)
+          .filter(p =>
+            p.precioOferta != null &&
+            p.precioOferta > 0 &&
+            p.precioOferta < p.precio
+          );
 
         this.productos.set(ofertas);
       },
@@ -43,7 +50,6 @@ export class Ofertas implements OnInit {
     });
   }
 
-  // Ruta de la imagen
   imagenUrl(p: Producto): string {
     const nombre = p.imagen ?? p.img ?? "";
 
@@ -53,7 +59,6 @@ export class Ofertas implements OnInit {
     return this.carpetaImagenes + nombre;
   }
 
-  // Formato de precios
   formatoPrecio(precio: number): string {
     return Number(precio).toLocaleString("es-AR");
   }

@@ -166,3 +166,20 @@
     height: 220px;
   }
 }
+
+.titulo-seccion {
+  margin: 24px 20px 8px;
+  font-weight: 700;
+}
+
+.precio-anterior {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 0.85em;
+  margin-right: 8px;
+}
+
+.precio-oferta {
+  color: #d32f2f;
+  font-weight: 700;
+}
